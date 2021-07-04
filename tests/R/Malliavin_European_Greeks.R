@@ -1,5 +1,5 @@
-#' Compputes the Greeks of an European option by with the Malliavin Monte Carlo
-#' Method in the Black Scholes model.
+#' This function calculates the fair value of an European option by with the
+#' Malliavin Monte Carlo Method in the Black Scholes model.
 #'
 #' @export
 #'
