@@ -2,8 +2,8 @@
 % Please edit documentation in R/Malliavin_Asian_Greeks.R
 \name{Malliavin_Asian_Greeks}
 \alias{Malliavin_Asian_Greeks}
-\title{Computes the Greeks of an European option by with the Malliavin Monte Carlo
-Method in the Black Scholes model.}
+\title{Computes the Greeks of an Asian option with the Malliavin Monte Carlo
+Method in the Black Scholes model}
 \usage{
 Malliavin_Asian_Greeks(
   initial_price = 100,
@@ -50,8 +50,8 @@ Malliavin_Asian_Greeks(
 }}
 
 \item{payoff}{\itemize{
-\item the payoff function, either a string in ("put", "call"), or a
-function.
+\item the payoff function, either a string in ("call", "put",
+"digital_call", "digital_put"), or a function.
 }}
 
 \item{greek}{\itemize{
@@ -97,8 +97,8 @@ Named vector containing the values of the Greeks specified in the
 parameter \code{greek}.
 }
 \description{
-Computes the Greeks of an European option by with the Malliavin Monte Carlo
-Method in the Black Scholes model.
+Computes the Greeks of an Asian option with the Malliavin Monte Carlo
+Method in the Black Scholes model
 }
 \examples{
 Malliavin_Asian_Greeks(initial_price = 110, exercise_price = 100,

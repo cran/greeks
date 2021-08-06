@@ -3,7 +3,7 @@
 \name{BS_European_Greeks}
 \alias{BS_European_Greeks}
 \title{Computes the greeks of an European call- or put-option in the Black Scholes
-model.}
+model}
 \usage{
 BS_European_Greeks(
   initial_price = 100,
@@ -57,7 +57,7 @@ parameter \code{greek}.
 }
 \description{
 Computes the greeks of an European call- or put-option in the Black Scholes
-model.
+model
 }
 \examples{
 BS_European_Greeks(initial_price = 120, exercise_price = 100,
