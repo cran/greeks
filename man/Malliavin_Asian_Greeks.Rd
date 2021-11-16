@@ -26,36 +26,36 @@ Malliavin_Asian_Greeks(
 }
 \arguments{
 \item{initial_price}{\itemize{
-\item initial price of the underlying asset.
+\item initial price of the underlying asset
 }}
 
 \item{exercise_price}{\itemize{
-\item strike price of the option.
+\item strike price of the option
 }}
 
 \item{r}{\itemize{
-\item risk-free interest rate.
+\item risk-free interest rate
 }}
 
 \item{time_to_maturity}{\itemize{
-\item time to maturity.
+\item time to maturity in years
 }}
 
 \item{volatility}{\itemize{
-\item volatility of the underlying asset.
+\item volatility of the underlying asset
 }}
 
 \item{dividend_yield}{\itemize{
-\item dividend yield.
+\item dividend yield
 }}
 
 \item{payoff}{\itemize{
 \item the payoff function, either a string in ("call", "put",
-"digital_call", "digital_put"), or a function.
+"digital_call", "digital_put"), or a function
 }}
 
 \item{greek}{\itemize{
-\item the Greek to be calculated.
+\item the Greek to be calculated
 }}
 
 \item{model}{\itemize{
@@ -76,11 +76,11 @@ which generates random numbers with the desired distribution
 }}
 
 \item{steps}{\itemize{
-\item the number of integration steps.
+\item the number of integration steps
 }}
 
 \item{paths}{\itemize{
-\item the number of simulated paths.
+\item the number of simulated paths
 }}
 
 \item{seed}{\itemize{
