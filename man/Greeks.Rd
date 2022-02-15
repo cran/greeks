@@ -2,7 +2,7 @@
 % Please edit documentation in R/Greeks.R
 \name{Greeks}
 \alias{Greeks}
-\title{Computes the greeks of vaious options}
+\title{Computes the Greeks of various options}
 \usage{
 Greeks(
   initial_price,
@@ -54,19 +54,14 @@ type of option to be considered}
 }}
 
 \item{greek}{\itemize{
-\item greeks to be calculated in c("fair_value", "delta", "vega",
+\item Greeks to be calculated in c("fair_value", "delta", "vega",
 "theta", "rho", "epsilon", "lambda", "gamma", "vanna")
 }}
 }
 \value{
-Named vector containing the values of the greeks specified in the
+Named vector containing the values of the Greeks specified in the
 parameter \code{greek}.
 }
 \description{
-Computes the greeks of vaious options
-}
-\examples{
-BS_European_Greeks(initial_price = 120, exercise_price = 100,
-r = 0.02, time_to_maturity = 4.5, dividend_yield = 0.015, volatility = 0.22,
-greek = c("fair_value", "delta", "gamma"), payoff = "put")
+Computes the Greeks of various options
 }
