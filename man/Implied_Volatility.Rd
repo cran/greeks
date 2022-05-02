@@ -59,10 +59,11 @@ type of option to be considered}
 
 \item{precision}{precision of the computation}
 
-\item{max_iter}{maxial number of iterations of the approximation}
+\item{max_iter}{maximal number of iterations of the approximation}
 }
 \value{
-the implied volatility.
+Named vector containing the values of the greeks specified in the
+parameter \code{greek}.
 }
 \description{
 Computes the implied volatility for various options via Newton's method

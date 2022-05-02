@@ -54,7 +54,7 @@ type of option to be considered}
 }}
 
 \item{greek}{\itemize{
-\item Greeks to be calculated in c("fair_value", "delta", "vega",
+\item greeks to be calculated in c("fair_value", "delta", "vega",
 "theta", "rho", "epsilon", "lambda", "gamma", "vanna")
 }}
 }

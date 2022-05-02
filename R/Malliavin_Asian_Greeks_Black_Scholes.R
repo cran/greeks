@@ -16,11 +16,6 @@
 #' @param payoff - the payoff function, either a string in ("call", "put",
 #' "digital_call", "digital_put"), or a function
 #' @param greek - the Greek to be calculated
-#' @param model - the model to be chosen in ("black_scholes", "jump_diffusion")
-#' @param lambda - the lambda of the Poisson process in the jump-diffusion model
-#' @param alpha - the alpha in the jump-diffusion model influences the jump size
-#' @param jump_distribution - the distribution of the jumps, choose a function
-#' which generates random numbers with the desired distribution
 #' @param steps - the number of integration steps
 #' @param paths - the number of simulated paths
 #' @param seed - the seed of the random number generator
@@ -35,23 +30,20 @@
 #' greek = c("fair_value", "delta", "rho"), payoff = "put")
 #'
 
-Malliavin_Asian_Greeks <- function(initial_price = 100,
-                                   exercise_price = 100,
-                                   r = 0,
-                                   time_to_maturity = 1,
-                                   volatility = 0.3,
-                                   dividend_yield = 0,
-                                   payoff = "call",
-                                   greek = c("fair_value", "delta", "rho", "vega",
-                                             "theta", "gamma"),
-                                   model = "black_scholes",
-                                   lambda = 0.2,
-                                   alpha = 0.3,
-                                   jump_distribution = function(n) stats::rt(n, df = 3),
-                                   steps = round(time_to_maturity*252),
-                                   paths = 10000,
-                                   seed = 1,
-                                   antithetic = FALSE) {
+Malliavin_Asian_Greeks_Black_Scholes <-
+  function(initial_price = 100,
+           exercise_price = 100,
+           r = 0,
+           time_to_maturity = 1,
+           volatility = 0.3,
+           dividend_yield = 0,
+           payoff = "call",
+           greek = c("fair_value", "delta", "rho", "vega",
+                     "theta", "gamma"),
+           steps = round(time_to_maturity*252),
+           paths = 10000,
+           seed = 1,
+           antithetic = FALSE) {
 
   dt <- time_to_maturity/steps
 
@@ -65,11 +57,11 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
     print("custom payoff")
   } else if (payoff == "call") {
     payoff <- function(x) {
-      return(pmax(0, x - exercise_price))
+      return(pmax(0, x-exercise_price))
     }
   } else if (payoff == "put") {
     payoff <- function(x) {
-      return(pmax(0, exercise_price - x))
+      return(pmax(0, exercise_price-x))
     }
   } else if (payoff == "digital_call") {
     payoff <- function(x) {ifelse(x >= exercise_price, 1, 0)
@@ -85,32 +77,25 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
     dqset.seed(seed)
   }
 
-  W <- make_BM(dqrnorm(n = paths*steps, sd = sqrt(dt)), paths = paths, steps = steps)
+  for (i in 1:steps) {
 
-  X <- calc_X(W, dt, initial_price, volatility, r)
+    W <- make_BM(dqrnorm(n = paths*steps, sd = sqrt(dt)), paths = paths, steps = steps)
 
-  if (model == "jump_diffusion") {
+    X <- calc_X(W, dt, initial_price, volatility, r)
 
-    Jumps <- c(numeric(paths), rpois(n = steps * paths, lambda = lambda *
-                                       dt))
-    for (i in which(Jumps != 0)) {
-      Jumps[i] <- alpha * sum(jump_distribution(Jumps[i]))
+    W_T <- W[, steps + 1]
+
+    X_T <- X[, steps+1]
+
+    if ("vega" %in% greek) {
+      XW <- calc_XW(X, W, steps, paths, dt)
+      tXW <- calc_tXW(X, W, steps, paths, dt)
     }
-    Jumps <- Jumps %>% matrix(nrow = paths) %>% rowCumsums()
-    X <- X * exp(Jumps)
 
-  } # model == "jump_diffusion"
+    rm(W)
 
-  W_T <- W[, steps + 1]
-
-  X_T <- X[, steps + 1]
-
-  if ("vega" %in% greek) {
-    XW <- calc_XW(X, W, steps, paths, dt)
-    tXW <- calc_tXW(X, W, steps, paths, dt)
   }
 
-  rm(W)
 
   ### the calculation of I_{(n)}, the integral \int_0^T t^n X_t dt ###
 
