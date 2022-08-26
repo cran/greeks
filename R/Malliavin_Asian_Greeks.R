@@ -35,23 +35,24 @@
 #' greek = c("fair_value", "delta", "rho"), payoff = "put")
 #'
 
-Malliavin_Asian_Greeks <- function(initial_price = 100,
-                                   exercise_price = 100,
-                                   r = 0,
-                                   time_to_maturity = 1,
-                                   volatility = 0.3,
-                                   dividend_yield = 0,
-                                   payoff = "call",
-                                   greek = c("fair_value", "delta", "rho", "vega",
-                                             "theta", "gamma"),
-                                   model = "black_scholes",
-                                   lambda = 0.2,
-                                   alpha = 0.3,
-                                   jump_distribution = function(n) stats::rt(n, df = 3),
-                                   steps = round(time_to_maturity*252),
-                                   paths = 10000,
-                                   seed = 1,
-                                   antithetic = FALSE) {
+Malliavin_Asian_Greeks <- function(
+    initial_price = 100,
+    exercise_price = 100,
+    r = 0,
+    time_to_maturity = 1,
+    volatility = 0.3,
+    dividend_yield = 0,
+    payoff = "call",
+    greek = c("fair_value", "delta", "rho", "vega",
+              "theta", "gamma"),
+    model = "black_scholes",
+    lambda = 0.2,
+    alpha = 0.3,
+    jump_distribution = function(n) stats::rt(n, df = 3),
+    steps = round(time_to_maturity*252),
+    paths = 10000,
+    seed = 1,
+    antithetic = FALSE) {
 
   dt <- time_to_maturity/steps
 

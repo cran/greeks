@@ -1,7 +1,7 @@
 Package: greeks
 Title: Sensitivities of Prices of Financial Options and Implied
         Volatilites
-Version: 0.6.0
+Version: 0.7.0
 Authors@R: 
     person(given = "Anselm",
            family = "Hudde",
@@ -21,14 +21,14 @@ Description: Methods to calculate sensitivities of financial option prices for
  Method is implemented, as is presented in Hull, J. C. (2017). 
 License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 Suggests: testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Imports: magrittr, dqrng, Rcpp
 LinkingTo: Rcpp
 NeedsCompilation: yes
-Packaged: 2022-05-02 23:21:10 UTC; Compi
+Packaged: 2022-08-26 18:36:20 UTC; Compi
 Author: Anselm Hudde [aut, cre] (<https://orcid.org/0000-0002-5652-2815>)
 Maintainer: Anselm Hudde <anselmhudde@gmx.de>
 Repository: CRAN
-Date/Publication: 2022-05-02 23:42:03 UTC
+Date/Publication: 2022-08-26 19:12:09 UTC
