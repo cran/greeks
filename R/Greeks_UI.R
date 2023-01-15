@@ -161,5 +161,3 @@ Greeks_UI <- function() {
   shinyApp(ui = ui, server = server, options = list(height = 1000))
 
 }
-
-Greeks_UI()
