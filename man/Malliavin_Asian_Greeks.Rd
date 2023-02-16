@@ -26,11 +26,12 @@ Malliavin_Asian_Greeks(
 }
 \arguments{
 \item{initial_price}{\itemize{
-\item initial price of the underlying asset
+\item initial price of the underlying asset, can also be a
+vector
 }}
 
 \item{exercise_price}{\itemize{
-\item strike price of the option
+\item strike price of the option, can also be a vector
 }}
 
 \item{r}{\itemize{

@@ -1,7 +1,7 @@
 Package: greeks
 Title: Sensitivities of Prices of Financial Options and Implied
         Volatilites
-Version: 0.8.1
+Version: 1.0.0
 Authors@R: 
     person(given = "Anselm",
            family = "Hudde",
@@ -22,15 +22,15 @@ Description: Methods to calculate sensitivities of financial option prices for
  Method is implemented, as is presented in Hull, J. C. (2017). 
 License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 7.2.2
-Suggests: knitr, rmarkdown, testthat (>= 3.0.0)
+RoxygenNote: 7.2.3
+Suggests: knitr, rmarkdown, testthat (>= 3.0.0), R.rsp
 Config/testthat/edition: 3
 Imports: magrittr, dqrng, Rcpp, tibble, ggplot2, plotly, shiny, tidyr
 LinkingTo: Rcpp
 NeedsCompilation: yes
-Packaged: 2023-01-15 12:39:21 UTC; Compi
+Packaged: 2023-02-16 17:10:06 UTC; Compi
 Author: Anselm Hudde [aut, cre] (<https://orcid.org/0000-0002-5652-2815>)
 Maintainer: Anselm Hudde <anselmhudde@gmx.de>
 VignetteBuilder: knitr
 Repository: CRAN
-Date/Publication: 2023-01-15 17:00:02 UTC
+Date/Publication: 2023-02-16 17:40:02 UTC

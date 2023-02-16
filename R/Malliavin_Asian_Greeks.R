@@ -7,8 +7,9 @@
 #' @import "Rcpp"
 #' @importFrom "dqrng" "dqrnorm" "dqset.seed"
 #'
-#' @param initial_price - initial price of the underlying asset
-#' @param exercise_price - strike price of the option
+#' @param initial_price - initial price of the underlying asset, can also be a
+#' vector
+#' @param exercise_price - strike price of the option, can also be a vector
 #' @param r - risk-free interest rate
 #' @param time_to_maturity - time to maturity in years
 #' @param volatility - volatility of the underlying asset
@@ -54,29 +55,50 @@ Malliavin_Asian_Greeks <- function(
     seed = 1,
     antithetic = FALSE) {
 
+  params <- c("initial_price", "exercise_price", "r", "time_to_maturity",
+              "volatility", "dividend_yield")
+
+  param <- params[1]
+  vectorized_param <- get(param)
+
+  for (p in params) {
+    if ( length(get(p)) >= 2) {
+      vectorized_param <- get(p)
+      param <- p
+      break
+    }
+  }
+
   dt <- time_to_maturity/steps
 
-  result <- vector(mode = "numeric", length = length(greek))
-
-  names(result) <- greek
+  result <-
+    matrix(ncol = length(greek),
+           nrow = length(vectorized_param),
+           dimnames = list(NULL, greek))
 
   ## the payoff function ##
 
   if (inherits(payoff, "function")) {
     print("custom payoff")
   } else if (payoff == "call") {
-    payoff <- function(x) {
+    payoff <- function(x, exercise_price) {
       return(pmax(0, x - exercise_price))
     }
+    dpayoff <- function(x, exercise_price) {
+      return((x > exercise_price) + 0)
+    }
   } else if (payoff == "put") {
-    payoff <- function(x) {
+    payoff <- function(x, exercise_price) {
       return(pmax(0, exercise_price - x))
     }
+    dpayoff <- function(x, exercise_price) {
+      return(-(x < exercise_price) + 0)
+      }
   } else if (payoff == "digital_call") {
-    payoff <- function(x) {ifelse(x >= exercise_price, 1, 0)
+    payoff <- function(x, exercise_price) {ifelse(x >= exercise_price, 1, 0)
     }
   } else if (payoff == "digital_put") {
-    payoff <- function(x) {ifelse(x <= exercise_price, 1, 0)
+    payoff <- function(x, exercise_price) {ifelse(x <= exercise_price, 1, 0)
     }
   }
 
@@ -88,7 +110,7 @@ Malliavin_Asian_Greeks <- function(
 
   W <- make_BM(dqrnorm(n = paths*steps, sd = sqrt(dt)), paths = paths, steps = steps)
 
-  X <- calc_X(W, dt, initial_price, volatility, r)
+  X <- calc_X(W, dt, volatility, r - dividend_yield)
 
   if (model == "jump_diffusion") {
 
@@ -106,7 +128,7 @@ Malliavin_Asian_Greeks <- function(
 
   X_T <- X[, steps + 1]
 
-  if ("vega" %in% greek) {
+  if (length(intersect(greek, c("vega", "vega_d")))) {
     XW <- calc_XW(X, W, steps, paths, dt)
     tXW <- calc_tXW(X, W, steps, paths, dt)
   }
@@ -117,7 +139,10 @@ Malliavin_Asian_Greeks <- function(
 
   I_0 <- calc_I(X, steps, dt)
 
-  if (length(intersect(greek, c("delta", "theta", "vega", "gamma")))) {
+  if (length(intersect(
+    greek,
+    c("delta", "delta_d", "theta", "vega", "vega_d", "gamma", "gamma_kombi",
+      "rho_d")))) {
     I_1 <- calc_I_1(X, steps, dt)
     I_2 <- calc_I_2(X, steps, dt)
   }
@@ -126,57 +151,97 @@ Malliavin_Asian_Greeks <- function(
     I_3 <- calc_I_3(X, steps, dt)
   }
 
-  E <- function(weight) {
-    return(exp(-r*time_to_maturity) * mean(payoff(I_0/time_to_maturity) * weight))
+  for (i in 1:length(vectorized_param)) {
+
+    assign(param, vectorized_param[i])
+
+    E <- function(weight) {
+      return(exp(-(r - dividend_yield)*time_to_maturity) *
+               mean(payoff(initial_price * I_0/time_to_maturity, exercise_price) * weight))
+    }
+
+    dE <- function(weight) {
+      return(exp(-(r-dividend_yield)*time_to_maturity) *
+               mean(dpayoff(initial_price * I_0/time_to_maturity, exercise_price) * weight))
+    }
+
+    if ("fair_value" %in% greek) {
+      result[i, "fair_value"] <-
+        E(1)
+    }
+
+    if ("delta" %in% greek) {
+      result[i, "delta"] <-
+        (1/(volatility * initial_price) *
+           (-volatility + I_0/I_1*W_T + volatility*I_0*I_2/(I_1^2))) %>%
+        E()
+    }
+
+    if ("delta_d" %in% greek) {
+      result[i, "delta_d"] <- dE(I_0 / time_to_maturity)
+    }
+
+    if ("rho" %in% greek) {
+      result[i, "rho"] <-
+        (W_T/volatility - time_to_maturity) %>%
+        E()
+    }
+
+    if ("rho_d" %in% greek) {
+      result[i, "rho_d"] <-
+        -time_to_maturity *  E(1) + dE(initial_price * I_1/time_to_maturity)
+    }
+
+    if ("theta" %in% greek) {
+      result[i, "theta"] <-
+        ((r - dividend_yield) - 1/time_to_maturity +
+           ((1/(volatility * time_to_maturity)) * I_0 * W_T -
+              (1/volatility) * X_T * W_T + time_to_maturity * X_T) / I_1 +
+           (1/time_to_maturity * I_0 * I_2 - I_2 * X_T) / (I_1^2)) %>%
+        E()
+    }
+
+    if ("theta_d" %in% greek) {
+      result[i, "theta_d"] <-
+        (r - dividend_yield) * E(1) +
+        dE(initial_price * (I_0/time_to_maturity^2 - X_T/time_to_maturity))
+    }
+
+    if ("vega" %in% greek) {
+      result[i, "vega"] <-
+        ((1 / volatility) *
+           ( -(1 + volatility * W_T) +
+               (W_T * XW - volatility * tXW) / I_1 +
+               (volatility * XW * I_2) / I_1^2)) %>%
+        E()
+    }
+
+    if ("vega_d" %in% greek) {
+      result[i, "vega_d"] <-
+        ((initial_price / time_to_maturity) * (XW - volatility * I_1)) %>%
+        dE()
+    }
+
+    if ("gamma" %in% greek) {
+      result[i, "gamma"] <-
+        ((1/(volatility^2*initial_price^2)) *
+           (2*volatility^2
+            - 4*volatility*W_T*I_0/I_1
+            + ((W_T^2 - time_to_maturity)*I_0 - 4*volatility^2*I_2)*I_0/I_1^2
+            + volatility * (3*W_T*I_2 - volatility*I_3)*I_0^2/I_1^3
+            + 3*volatility^2*I_0^2*I_2^2/I_1^4)) %>%
+        E()
+    }
+
+    if ("gamma_kombi" %in% greek) {
+      result[i, "gamma_kombi"] <-
+        (1/(volatility * initial_price) *
+           (-volatility + I_0/I_1*W_T + volatility*I_0*I_2/(I_1^2))) %>%
+        dE()
+    }
+
   }
 
-  if ("fair_value" %in% greek) {
-    result["fair_value"] <-
-      E(1)
-  }
-
-  if ("delta" %in% greek) {
-    result["delta"] <-
-      (1/(volatility * initial_price) *
-         (-volatility + I_0/I_1*W_T + volatility*I_0*I_2/(I_1^2))) %>%
-      E()
-  }
-
-  if ("rho" %in% greek) {
-    result["rho"] <-
-      (W_T/volatility - time_to_maturity) %>%
-      E()
-  }
-
-  if ("theta" %in% greek) {
-    result["theta"] <-
-      (r - 1/time_to_maturity +
-         (1/(volatility * time_to_maturity) * I_0 * W_T -
-            1/volatility * X_T * W_T + time_to_maturity * X_T) / I_1 +
-         (1/time_to_maturity * I_0 * I_2 - I_2 * X_T) / (I_1^2)) %>%
-      E()
-  }
-
-  if ("vega" %in% greek) {
-    result["vega"] <-
-      ((1 / volatility) *
-         ( -(1 + volatility * W_T) +
-             (W_T * XW - volatility * tXW) / I_1 +
-             (volatility * XW * I_2) / I_1^2)) %>%
-      E()
-  }
-
-  if ("gamma" %in% greek) {
-    result["gamma"] <-
-      ((1/(volatility^2*initial_price^2)) *
-         (2*volatility^2
-          - 4*volatility*W_T*I_0/I_1
-          + ((W_T^2 - time_to_maturity)*I_0 - 4*volatility^2*I_2)*I_0/I_1^2
-          + volatility * (3*W_T*I_2 - volatility*I_3)*I_0^2/I_1^3
-          + 3*volatility^2*I_0^2*I_2^2/I_1^4)) %>%
-      E()
-  }
-
-  return(result)
+  return(drop(result))
 
 }
