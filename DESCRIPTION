@@ -1,7 +1,7 @@
 Package: greeks
 Title: Sensitivities of Prices of Financial Options and Implied
         Volatilites
-Version: 1.0.0
+Version: 1.1.0
 Authors@R: 
     person(given = "Anselm",
            family = "Hudde",
@@ -28,9 +28,9 @@ Config/testthat/edition: 3
 Imports: magrittr, dqrng, Rcpp, tibble, ggplot2, plotly, shiny, tidyr
 LinkingTo: Rcpp
 NeedsCompilation: yes
-Packaged: 2023-02-16 17:10:06 UTC; Compi
+Packaged: 2023-03-17 15:01:04 UTC; hudde
 Author: Anselm Hudde [aut, cre] (<https://orcid.org/0000-0002-5652-2815>)
 Maintainer: Anselm Hudde <anselmhudde@gmx.de>
 VignetteBuilder: knitr
 Repository: CRAN
-Date/Publication: 2023-02-16 17:40:02 UTC
+Date/Publication: 2023-03-17 15:20:06 UTC

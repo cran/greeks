@@ -1,18 +1,20 @@
 ---
 output:
-  pdf_document: default
   html_document: default
-  word_document: default
 ---
+# Greeks 1.1.0
+
+`BS_Geometric_Asian_Greeks()` now computes prices and sensitivities of geometric
+Asian options.
+
+`Greeks_UI()` also displays Geometric Asian Options.
+
 # Greeks 1.0.0
 
 `Greeks_UI()`: Added American Options and Greeks.
 
-`Implied_Volatility()`: Improved performance for European Options by
-implementing Halley's Method.
-
-`Malliavin_Asian_Greeks()`: initial_price and exercise_price now accept vectors
-as input
+`Implied_Volatility()`: Improved performance for European Options by implementing
+Halley's Method.
 
 # Greeks 0.8.1
 
