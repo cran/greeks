@@ -2,6 +2,11 @@
 output:
   html_document: default
 ---
+
+## Greeks 1.2.0
+
+`Greeks_UI()` Added arithmetic Asian Option prices and Greeks
+
 # Greeks 1.1.0
 
 `BS_Geometric_Asian_Greeks()` now computes prices and sensitivities of geometric
