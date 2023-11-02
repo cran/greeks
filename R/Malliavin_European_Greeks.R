@@ -1,4 +1,4 @@
-#' Computes the Greeks of an European option with the Malliavin Monte Carlo
+#' Computes the Greeks of a European option with the Malliavin Monte Carlo
 #' Method in the Black Scholes model
 #'
 #' @export
@@ -11,10 +11,10 @@
 #' @param r - risk-free interest rate
 #' @param time_to_maturity - time to maturity in years
 #' @param volatility - volatility of the underlying asset
-#' @param dividend_yield - dividend yield
 #' @param payoff - the payoff function, either a string in ("call", "put",
 #' "digital_call", "digital_put"), or a function
-#' @param greek - the greek to be calculated
+#' @param greek - the Greeks to be calculated in ("fair_value", "delta",
+#' "vega", "theta", "rho", "gamma")
 #' @param model - the model to be chosen
 #' @param paths - the number of simulated paths
 #' @param seed - the seed of the random number generator
@@ -24,9 +24,9 @@
 #' @return Named vector containing the values of the Greeks specified in the
 #' parameter \code{greek}
 #'
-#' @examples Malliavin_European_Greeks(initial_price = 110, exercise_price = 100,
-#' r = 0.02, time_to_maturity = 4.5, dividend_yield = 0.015, volatility = 0.22,
-#' greek = c("fair_value", "delta", "rho"), payoff = "put")
+#' @examples Malliavin_European_Greeks(initial_price = 110,
+#' exercise_price = 100, r = 0.02, time_to_maturity = 4.5,
+#' volatility = 0.22, greek = c("fair_value", "delta", "rho"), payoff = "put")
 #'
 
 Malliavin_European_Greeks <-
@@ -35,7 +35,6 @@ Malliavin_European_Greeks <-
            r = 0,
            time_to_maturity = 1,
            volatility = 0.3,
-           dividend_yield = 0,
            payoff = "call",
            greek = c("fair_value", "delta", "vega", "theta", "rho", "gamma"),
            model = "Black Scholes",
@@ -84,14 +83,16 @@ Malliavin_European_Greeks <-
 
   if (model == "Black Scholes") {
     X_T <- initial_price *
-      exp((r-(volatility^2)/2)*time_to_maturity + (volatility*W_T))
+      exp((r - (volatility^2)/2)*time_to_maturity +
+            (volatility*W_T))
     } else {
     print("Unknown model")
     return()
   }
 
   E <- function(weight) {
-    return(exp(-r*time_to_maturity) * mean(payoff(X_T) * weight))
+    return(exp(-r*time_to_maturity) *
+             mean(payoff(X_T) * weight))
   }
 
   if ("fair_value" %in% greek) {

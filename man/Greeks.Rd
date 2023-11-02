@@ -2,7 +2,9 @@
 % Please edit documentation in R/Greeks.R
 \name{Greeks}
 \alias{Greeks}
-\title{Computes the Greeks of various options}
+\title{Computes the Greeks of various options in the Black Scholes model or both in
+the Black Scholes model or a Jump Diffusion model in the case of Asian
+Options, or in the Binomial options pricing model}
 \usage{
 Greeks(
   initial_price,
@@ -44,7 +46,7 @@ Greeks(
 }}
 
 \item{model}{\itemize{
-\item the model to be chosen
+\item the model to be chosen in ("black_scholes", "jump_diffusion")
 }}
 
 \item{option_type}{in c("European", "American", "Asian", "Geometric Asian",
@@ -70,5 +72,15 @@ Named vector containing the values of the Greeks specified in the
 parameter \code{greek}.
 }
 \description{
-Computes the Greeks of various options
+Computes the Greeks of various options in the Black Scholes model or both in
+the Black Scholes model or a Jump Diffusion model in the case of Asian
+Options, or in the Binomial options pricing model
+}
+\examples{
+Greeks(initial_price = 100, exercise_price = 120, r = 0.01,
+time_to_maturity = 5, volatility = 0.30, payoff = "call")
+
+Greeks(initial_price = 100, exercise_price = 100, r = -0.005,
+time_to_maturity = 1, volatility = 0.30, payoff = "put",
+option_type = "American")
 }

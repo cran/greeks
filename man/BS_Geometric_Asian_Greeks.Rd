@@ -2,8 +2,8 @@
 % Please edit documentation in R/BS_Geometric_Asian_Greeks.R
 \name{BS_Geometric_Asian_Greeks}
 \alias{BS_Geometric_Asian_Greeks}
-\title{Computes the Greeks of an Geometric Asian Option with classical Call- and
-Put-Payoff}
+\title{Computes the Greeks of a Geometric Asian Option with classical Call- and
+Put-Payoff in the Black Scholes model}
 \usage{
 BS_Geometric_Asian_Greeks(
   initial_price = 100,
@@ -56,7 +56,8 @@ Named vector containing the values of the Greeks specified in the
 parameter \code{greek}.
 }
 \description{
-TODO: epsilon
+Computes the Greeks of a Geometric Asian Option with classical Call- and
+Put-Payoff in the Black Scholes model
 }
 \examples{
 BS_Geometric_Asian_Greeks(initial_price = 110, exercise_price = 100,

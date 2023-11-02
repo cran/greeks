@@ -1,7 +1,5 @@
-#' Computes the Greeks of an Geometric Asian Option with classical Call- and
-#' Put-Payoff
-#'
-#' TODO: epsilon
+#' Computes the Greeks of a Geometric Asian Option with classical Call- and
+#' Put-Payoff in the Black Scholes model
 #'
 #' @export
 #'

@@ -1,4 +1,6 @@
-#' Computes the Greeks of various options
+#' Computes the Greeks of various options in the Black Scholes model or both in
+#' the Black Scholes model or a Jump Diffusion model in the case of Asian
+#' Options, or in the Binomial options pricing model
 #'
 #' @export
 #'
@@ -8,7 +10,7 @@
 #' @param time_to_maturity - time to maturity in years
 #' @param dividend_yield - dividend yield
 #' @param volatility - volatility of the underlying asset
-#' @param model - the model to be chosen
+#' @param model - the model to be chosen in ("black_scholes", "jump_diffusion")
 #' @param option_type in c("European", "American", "Asian", "Geometric Asian",
 #' "Digital", "Binomial) - the type of option to be considered
 #' @param payoff - in c("call", "put", "cash_or_nothing_call",
@@ -21,6 +23,14 @@
 #' @return Named vector containing the values of the Greeks specified in the
 #' parameter \code{greek}.
 #'
+#'
+#' @examples
+#' Greeks(initial_price = 100, exercise_price = 120, r = 0.01,
+#' time_to_maturity = 5, volatility = 0.30, payoff = "call")
+#'
+#' Greeks(initial_price = 100, exercise_price = 100, r = -0.005,
+#' time_to_maturity = 1, volatility = 0.30, payoff = "put",
+#' option_type = "American")
 
 Greeks <-
   function(initial_price,
@@ -82,16 +92,16 @@ Greeks <-
     else if (tolower(option_type) == "asian" && tolower(model) == "black_scholes" &&
              ("fair_value" %in% greek || "delta" %in% greek || "rho" %in% greek)) {
       return(BS_Malliavin_Asian_Greeks(payoff = payoff,
-                                    greek = greek,
-                                    initial_price = initial_price,
-                                    exercise_price = exercise_price,
-                                    r = r,
-                                    time_to_maturity = time_to_maturity,
-                                    volatility = volatility,
-                                    dividend_yield = dividend_yield))
+                                       greek = greek,
+                                       initial_price = initial_price,
+                                       exercise_price = exercise_price,
+                                       r = r,
+                                       time_to_maturity = time_to_maturity,
+                                       volatility = volatility,
+                                       dividend_yield = dividend_yield))
     }
 
-    else if (tolower(option_type) == "asian" && tolower(model) == "black_scholes") {
+    else if (tolower(option_type) == "asian" && tolower(model) == "jump_diffusion") {
       return(Malliavin_Asian_Greeks(payoff = payoff,
                                     greek = greek,
                                     initial_price = initial_price,
@@ -106,4 +116,4 @@ Greeks <-
       stop("Wrong input or not yet implemented.")
     }
 
-}
+  }
