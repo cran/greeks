@@ -1,9 +1,4 @@
-# TODO: Digital options
-
 test_that("Malliavin_European_Greeks is correct", {
-
-  # We check the Greeks by also computing the derivative with finite difference
-  # and comparing the results
 
   number_of_runs <- 30
 
@@ -25,7 +20,8 @@ test_that("Malliavin_European_Greeks is correct", {
     volatility <- runif(1, 0.01, 1)
     model <- "Black_Scholes"
     payoff <- sample(
-      c("call", "put"), 1)
+      c("call", "put", "cash_or_nothing_call", "cash_or_nothing_put",
+        "asset_or_nothing_put"), 1)
     antithetic <- sample(c(TRUE, FALSE), 1)
     greek <- sample(Greeks, 1)
 
@@ -61,5 +57,18 @@ test_that("Malliavin_European_Greeks is correct", {
   }
 
   expect(max(error) < 0.01)
+  expect_error(Malliavin_European_Greeks(model = "whatever_model"))
+
+  # Check, whether custom payoff function works
+
+  call_function <- function(x) {
+    return(pmax(0, x-100))
+  }
+
+  diff <-
+    sum(abs(Malliavin_European_Greeks(payoff = call_function) -
+              Malliavin_European_Greeks(payoff = "call")))
+
+  expect(abs(diff) < 1e-7)
 
 })

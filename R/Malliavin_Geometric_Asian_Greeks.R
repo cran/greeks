@@ -9,7 +9,7 @@
 #'
 #' @param initial_price - initial price of the underlying asset, can also be a
 #' vector
-#' @param exercise_price - strike price of the option
+#' @param exercise_price - strike price of the option, can also be a vector
 #' @param r - risk-free interest rate
 #' @param time_to_maturity - time to maturity in years
 #' @param volatility - volatility of the underlying asset
@@ -87,15 +87,9 @@ Malliavin_Geometric_Asian_Greeks <- function(
     payoff <- function(x, exercise_price) {
       return(pmax(0, x - exercise_price))
     }
-    dpayoff <- function(x, exercise_price) {
-      return((x > exercise_price) + 0)
-    }
   } else if (payoff == "put") {
     payoff <- function(x, exercise_price) {
       return(pmax(0, exercise_price - x))
-    }
-    dpayoff <- function(x, exercise_price) {
-      return(-(x < exercise_price) + 0)
     }
   } else if (payoff == "digital_call") {
     payoff <- function(x, exercise_price) {ifelse(x >= exercise_price, 1, 0)
@@ -131,7 +125,7 @@ Malliavin_Geometric_Asian_Greeks <- function(
 
   X_T <- X[, steps + 1]
 
-  if (length(intersect(greek, c("vega", "vega_d")))) {
+  if ("vega" %in% greek) {
     XW <- calc_XW(X, W, steps, paths, dt)
     tXW <- calc_tXW(X, W, steps, paths, dt)
   }
@@ -143,10 +137,7 @@ Malliavin_Geometric_Asian_Greeks <- function(
 
   I_0 <- calc_I(X, steps, dt)
 
-  if (length(intersect(
-    greek,
-    c("delta", "delta_d", "delta_2", "theta", "vega", "vega_d", "gamma", "gamma_kombi",
-      "rho_d")))) {
+  if (length(intersect(greek, c("delta", "theta", "vega", "gamma")))) {
     I_1 <- calc_I_1(X, steps, dt)
     I_2 <- calc_I_2(X, steps, dt)
   }
@@ -162,21 +153,6 @@ Malliavin_Geometric_Asian_Greeks <- function(
     E <- function(weight) {
       return(exp(-(r - dividend_yield) * time_to_maturity) *
                mean(payoff(initial_price * I_0/time_to_maturity, exercise_price) * weight))
-    }
-
-    E_paths <- function(weight) {
-      return(exp(-(r - dividend_yield) * time_to_maturity) *
-               payoff(initial_price * I_0/time_to_maturity, exercise_price) * weight)
-    }
-
-    dE <- function(weight) {
-      return(exp(-(r - dividend_yield) * time_to_maturity) *
-               mean(dpayoff(initial_price * I_0/time_to_maturity, exercise_price) * weight))
-    }
-
-    dE_paths <- function(weight) {
-      return(exp(-(r - dividend_yield) * time_to_maturity) *
-               dpayoff(initial_price * I_0/time_to_maturity, exercise_price) * weight)
     }
 
     # TODO: comment
@@ -198,33 +174,10 @@ Malliavin_Geometric_Asian_Greeks <- function(
 
     } #delta
 
-
     if ("rho" %in% greek) {
-      rho <-
+      result[i, "rho"] <-
         (W_T/volatility - time_to_maturity) %>%
-        E_paths()
-
-      rho_geom_fd <-
-        -time_to_maturity * exp(-r*time_to_maturity) * payoff(I_0_geom, exercise_price) +
-        (time_to_maturity/2) * exp(-(r - dividend_yield) * time_to_maturity) *
-        dpayoff(I_0_geom, exercise_price) * I_0_geom
-
-      cont <-
-        rho_geom_fd -
-        BS_Geometric_Asian_Greeks(
-          initial_price = initial_price,
-          exercise_price = exercise_price,
-          r = r,
-          time_to_maturity = time_to_maturity,
-          volatility = volatility,
-          dividend_yield = dividend_yield,
-          payoff = payoff_name,
-          greek = "rho"
-        )
-
-      model <- lm(rho ~ cont)
-
-      result[i, "rho"] <- model$coefficients["(Intercept)"]
+        E()
     } #rho
 
     if ("theta" %in% greek) {
@@ -241,11 +194,11 @@ Malliavin_Geometric_Asian_Greeks <- function(
         exp(-r*time_to_maturity) *
         mean(
           payoff(I_0_geom, exercise_price) *
-               (
-                 2/(volatility * time_to_maturity**2) * W_T * I_W -
-                   1/volatility -
-                   W_T
-               ))
+            (
+              2/(volatility * time_to_maturity**2) * W_T * I_W -
+                1/volatility -
+                W_T
+            ))
 
     } #vega
 

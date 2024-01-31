@@ -19,6 +19,8 @@
 #' "theta", "rho", "epsilon", "lambda", "gamma", "vanna", "charm", "vomma",
 #' "veta", "vera", "speed", "zomma", "color", "ultima")
 #' @param ... - ...	Other arguments passed on to methods
+#' @param antithetic - if TRUE, antithetic random numbers will be chosen to
+#' decrease variance
 #'
 #' @return Named vector containing the values of the Greeks specified in the
 #' parameter \code{greek}.
@@ -43,6 +45,7 @@ Greeks <-
            option_type = "European",
            payoff = "call",
            greek = c("fair_value", "delta", "vega", "theta", "rho", "gamma"),
+           antithetic = TRUE,
            ...){
 
     if (tolower(option_type) %in% c("digital", "european") &&
@@ -54,7 +57,6 @@ Greeks <-
                 'cash_or_nothing_put',
                 'asset_or_nothing_call',
                 'asset_or_nothing_put'.")
-        return()
       }
       return(BS_European_Greeks(payoff = payoff,
                                 greek = greek,
@@ -109,7 +111,9 @@ Greeks <-
                                     r = r,
                                     time_to_maturity = time_to_maturity,
                                     volatility = volatility,
-                                    dividend_yield = dividend_yield))
+                                    dividend_yield = dividend_yield,
+                                    model = model,
+                                    antithetic = antithetic))
     }
 
     else {
