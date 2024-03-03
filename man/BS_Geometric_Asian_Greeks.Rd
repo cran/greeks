@@ -56,8 +56,10 @@ Named vector containing the values of the Greeks specified in the
 parameter \code{greek}.
 }
 \description{
-Computes the Greeks of a Geometric Asian Option with classical Call- and
-Put-Payoff in the Black Scholes model
+For the definition of geometric Asian options see
+\link{Malliavin_Geometric_Asian_Greeks}.
+\link{BS_Geometric_Asian_Greeks} offers a fast and exaction computation of
+Geometric Asian Greeks.
 }
 \examples{
 BS_Geometric_Asian_Greeks(initial_price = 110, exercise_price = 100,
@@ -65,4 +67,11 @@ r = 0.02, time_to_maturity = 4.5, dividend_yield = 0.015, volatility = 0.22,
 greek = c("fair_value", "delta", "rho", "vega", "theta", "gamma"),
 payoff = "put")
 
+}
+\seealso{
+\link{Malliavin_Geometric_Asian_Greeks} for the Monte Carlo
+implementation which provides digital and custom payoff functions and also
+works for the jump diffusion model
+
+\link{Greeks_UI} for an interactive visualization
 }

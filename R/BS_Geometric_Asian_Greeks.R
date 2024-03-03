@@ -1,7 +1,19 @@
+#' @title
 #' Computes the Greeks of a Geometric Asian Option with classical Call- and
 #' Put-Payoff in the Black Scholes model
 #'
+#' @description
+#' For the definition of geometric Asian options see
+#' [Malliavin_Geometric_Asian_Greeks].
+#' [BS_Geometric_Asian_Greeks] offers a fast and exaction computation of
+#' Geometric Asian Greeks.
+#'
 #' @export
+#'
+#' @seealso [Malliavin_Geometric_Asian_Greeks] for the Monte Carlo
+#' implementation which provides digital and custom payoff functions and also
+#' works for the jump diffusion model
+#' @seealso [Greeks_UI] for an interactive visualization
 #'
 #' @import "stats"
 #' @import "Rcpp"

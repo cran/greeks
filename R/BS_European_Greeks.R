@@ -1,7 +1,13 @@
-#' Computes the Greeks of a European call- or put-option, or of digital options
-#' in the Black Scholes model
+#' @title Computes the Greeks of a European call- or put-option, or of digital
+#' options in the Black Scholes model.
+#'
+#' @description
+#' For details on the definition of Greeks see [Greeks].
 #'
 #' @export
+#'
+#' @seealso [Malliavin_European_Greeks] for the Monte Carlo implementation
+#' @seealso [Greeks_UI] for an interactive visualization
 #'
 #' @import "stats"
 #'

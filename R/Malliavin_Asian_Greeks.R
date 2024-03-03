@@ -1,8 +1,23 @@
+#' @title
 #' Computes the Greeks of an Asian option with the Malliavin Monte Carlo
 #' Method in the Black Scholes model, or for Asian options, also in a Jump
 #' Diffusion model
 #'
+#' @description
+#' Asian options are path-dependent.
+#' If \eqn{S_t} is the price of the underlying asset at time \eqn{t}, the
+#' execution of an Asian option depends on the average price of option,
+#' \eqn{\frac{1}{T} \int_0^T S_t dt}, where \eqn{T} is the time-to-maturity of
+#' the option.
+#' For more details on the definition of Greeks in general see [Greeks].
+#'
+#' For a description of Malliavin Monte Carlo Methods for Greeks see for example
+#' (Hudde & Rüschendorf, 2023).
+#'
 #' @export
+#'
+#' @seealso [BS_Malliavin_Asian_Greeks] for a faster computation, but only in
+#' the Black Scholes model and with a smaller set of Greeks
 #'
 #' @import "stats"
 #' @import "Rcpp"
@@ -35,6 +50,9 @@
 #' @examples Malliavin_Asian_Greeks(initial_price = 110, exercise_price = 100,
 #' r = 0.02, time_to_maturity = 4.5, dividend_yield = 0.015, volatility = 0.22,
 #' greek = c("fair_value", "delta", "rho"), payoff = "put")
+#'
+#' @references
+#' Hudde, A., & Rüschendorf, L. (2023). European and Asian Greeks for Exponential Lévy Processes. Methodol Comput Appl Probab, 25 (39). \doi{10.1007/s11009-023-10014-5}
 #'
 
 Malliavin_Asian_Greeks <- function(
@@ -94,7 +112,7 @@ Malliavin_Asian_Greeks <- function(
     }
     dpayoff <- function(x, exercise_price) {
       return(-(x < exercise_price) + 0)
-      }
+    }
   } else if (payoff == "digital_call") {
     payoff <- function(x, exercise_price) {ifelse(x >= exercise_price, 1, 0)
     }

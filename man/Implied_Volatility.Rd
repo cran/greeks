@@ -62,13 +62,25 @@ Implied_Volatility(
 \item{max_iter}{maximal number of iterations of the approximation}
 }
 \value{
-Named vector containing the values of the greeks specified in the
+Named vector containing the values of the Greeks specified in the
 parameter \code{greek}.
 }
 \description{
-Computes the implied volatility for various options via Newton's method
+If the value of an option, and other (model)parameters like the risk-free
+interest rate, the time-to-maturity, and the dividend yield are known, the
+assumed volatility of the underlying asset, the \emph{implied volatility} can be
+inferred.
+See Hull (2022).
 }
 \examples{
 Implied_Volatility(15, r = 0.05, option_type = "Asian",
 payoff = "call")
+}
+\references{
+Hull, J. C. (2022). Options, futures, and other derivatives (11th Edition).
+Pearson
+}
+\seealso{
+\link{BS_Implied_Volatility} for the special case
+option_type = "European" and payoff in c("call", "put")
 }

@@ -1,6 +1,21 @@
+#' @title
 #' Computes the implied volatility for various options via Newton's method
 #'
+#' @description
+#' If the value of an option, and other (model)parameters like the risk-free
+#' interest rate, the time-to-maturity, and the dividend yield are known, the
+#' assumed volatility of the underlying asset, the *implied volatility* can be
+#' inferred.
+#' See Hull (2022).
+#'
+#' @references
+#' Hull, J. C. (2022). Options, futures, and other derivatives (11th Edition).
+#' Pearson
+#'
 #' @export
+#'
+#' @seealso [BS_Implied_Volatility] for the special case
+#' option_type = "European" and payoff in c("call", "put")
 #'
 #' @param option_price - current price of the option
 #' @param initial_price - initial price of the underlying asset
@@ -16,7 +31,7 @@
 #' @param start_volatility initial guess
 #' @param precision precision of the computation
 #'
-#' @return Named vector containing the values of the greeks specified in the
+#' @return Named vector containing the values of the Greeks specified in the
 #' parameter \code{greek}.
 #'
 #' @examples Implied_Volatility(15, r = 0.05, option_type = "Asian",

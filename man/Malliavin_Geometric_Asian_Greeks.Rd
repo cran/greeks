@@ -2,8 +2,8 @@
 % Please edit documentation in R/Malliavin_Geometric_Asian_Greeks.R
 \name{Malliavin_Geometric_Asian_Greeks}
 \alias{Malliavin_Geometric_Asian_Greeks}
-\title{Computes the Greeks of an Asian option with the Malliavin Monte Carlo
-Method in the Black Scholes model}
+\title{Computes the Greeks of a geometric Asian option with the Malliavin Monte
+Carlo Method in the Black Scholes- or Jump diffusion model}
 \usage{
 Malliavin_Geometric_Asian_Greeks(
   initial_price = 100,
@@ -98,12 +98,27 @@ Named vector containing the values of the Greeks specified in the
 parameter \code{greek}.
 }
 \description{
-Computes the Greeks of an Asian option with the Malliavin Monte Carlo
-Method in the Black Scholes model
+In contrast to Asian options (see \link{Malliavin_Asian_Greeks}), geometric Asian
+options evaluate the geometric average
+\eqn{\exp \left( \frac{1}{T} \int_0^T \ln S_t dt \right)}, where
+\eqn{S_t} is the price of the underlying asset at time \eqn{t} and \eqn{T} is
+the time-to-maturity of the option (see
+
+\href{https://en.wikipedia.org/wiki/Asian_option#European_Asian_call_and_put_options_with_geometric_averaging}{en.wikipedia.org/wiki/Asian_option#European_Asian_call_and_put_options_with_geometric_averaging}).
+For more details on the definition of Greeks see \link{Greeks}, and for a
+description of the Malliavin Monte Carlo Method for Greeks see for example
+(Hudde & Rüschendorf, 2023).
 }
 \examples{
 Malliavin_Asian_Greeks(initial_price = 110, exercise_price = 100,
 r = 0.02, time_to_maturity = 4.5, dividend_yield = 0.015, volatility = 0.22,
 greek = c("fair_value", "delta", "rho"), payoff = "put")
 
+}
+\references{
+Hudde, A., & Rüschendorf, L. (2023). European and Asian Greeks for Exponential Lévy Processes. Methodol Comput Appl Probab, 25 (39). \doi{10.1007/s11009-023-10014-5}
+}
+\seealso{
+\link{BS_Geometric_Asian_Greeks} for exact and fast computation in the
+Black Scholes model and for put- and call payoff functions
 }

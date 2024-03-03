@@ -51,8 +51,8 @@ function
 }}
 
 \item{greek}{\itemize{
-\item Greeks to be calculated in c("fair_value", "delta", "gamma",
-"rho", "theta", "vega")
+\item Greeks to be calculated in c("fair_value", "delta", "rho",
+"vega")
 }}
 
 \item{steps}{\itemize{
@@ -72,12 +72,19 @@ Named vector containing the values of the Greeks specified in the
 parameter \code{greek}.
 }
 \description{
-Computes the Greeks of an Asian option with the Malliavin Monte Carlo Method
-in the Black Scholes model
+For a description of Asian Greeks see \link{Malliavin_Asian_Greeks}.
+BS_Malliavin_Asian_Greeks offers a fast implementation in the Black Scholes
+model.
 }
 \examples{
 BS_Malliavin_Asian_Greeks(initial_price = 110, exercise_price = 100,
 r = 0.02, time_to_maturity = 4.5, dividend_yield = 0.015, volatility = 0.22,
 greek = c("fair_value", "delta", "rho"), payoff = "put")
 
+}
+\seealso{
+\link{Malliavin_Asian_Greeks} for a greater set of Greeks and also
+in the jump diffusion model
+
+\link{Greeks_UI} for an interactive visualization
 }

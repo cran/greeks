@@ -1,7 +1,18 @@
-#' Computes the implied volatility for European options in the Black Scholes
-#' model via Halley's method.
+#' @title
+#' Computes the implied volatility for European put- and call options in the
+#' Black Scholes model via Halley's method.
+#'
+#' @description For the definition of *implied volatility* see
+#' [Implied_Volatility].
+#' [BS_Implied_Volatility] offers a very fast implementation for European put-
+#' and call options applying Halley's method (see
+#'
+#' [en.wikipedia.org/wiki/Halley%27s_method](https://en.wikipedia.org/wiki/Halley%27s_method)).
 #'
 #' @export
+#'
+#' @seealso [Implied_Volatility] for American and Asian options, and for
+#' digital payoff functions
 #'
 #' @import "stats"
 #' @import "Rcpp"

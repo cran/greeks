@@ -1,7 +1,17 @@
+#' @title
 #' Computes the Greeks of an American call- or put-option with the Binomial
 #' options pricing model
 #'
+#' @description
+#' In contract to European Options, American options can be executed at any time
+#' until the expiration date.
+#' For more details on the definition of Greeks in general see [Greeks].
+#' This functions computes Greeks of American put- and call options in the
+#' binomial option pricing model (see (Hull, 2022)).
+#'
 #' @export
+#'
+#' @seealso [Greeks_UI] for an interactive visualization
 #'
 #' @import "stats"
 #' @import "Rcpp"
@@ -28,6 +38,9 @@
 #' r = 0, time_to_maturity = 1, volatility = 0.3, dividend_yield = 0,
 #' payoff = "call", greek = c("fair_value", "delta", "vega", "theta", "rho",
 #' "epsilon", "gamma"), steps = 20)
+#'
+#'@references
+#' Hull, J. C. (2022). Options, futures, and other derivatives (11th Edition). Pearson
 #'
 
 Binomial_American_Greeks <-
