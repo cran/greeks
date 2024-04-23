@@ -144,11 +144,6 @@ Malliavin_Geometric_Asian_Greeks <- function(
 
   X_T <- X[, steps + 1]
 
-  if ("vega" %in% greek) {
-    XW <- calc_XW(X, W, steps, paths, dt)
-    tXW <- calc_tXW(X, W, steps, paths, dt)
-  }
-
   # TODO: comment
   I_W <- calc_I(W, steps, dt)
 
@@ -169,34 +164,29 @@ Malliavin_Geometric_Asian_Greeks <- function(
 
     assign(param, vectorized_param[i])
 
-    E <- function(weight) {
-      return(exp(-(r - dividend_yield) * time_to_maturity) *
-               mean(payoff(initial_price * I_0/time_to_maturity, exercise_price) * weight))
-    }
-
     # TODO: comment
     I_0_geom <-
       exp(calc_I(log(initial_price * X), steps, dt) / time_to_maturity)
 
-    if ("fair_value" %in% greek) {
-      result[i, "fair_value"] <-
-        exp(-(r - dividend_yield)*time_to_maturity) *
-        payoff(I_0_geom, exercise_price) %>%
-        mean()
+    #TODO: comment
+    E_I_0_geom <- function(weight) {
+      return(exp(-(r - dividend_yield) * time_to_maturity) *
+               mean(payoff(I_0_geom, exercise_price) * weight))
+    }
 
+    if ("fair_value" %in% greek) {
+      result[i, "fair_value"] <- E_I_0_geom(1)
     } #fair_value
 
     if ("delta" %in% greek) {
       result[i, "delta"] <-
-        2*exp(-r*time_to_maturity)/(initial_price*volatility*time_to_maturity) *
-        mean(payoff(I_0_geom, exercise_price) * W_T)
-
+        (2/(initial_price*volatility*time_to_maturity)) * E_I_0_geom(W_T)
     } #delta
 
     if ("rho" %in% greek) {
       result[i, "rho"] <-
         (W_T/volatility - time_to_maturity) %>%
-        E()
+        E_I_0_geom()
     } #rho
 
     if ("theta" %in% greek) {
@@ -205,7 +195,7 @@ Malliavin_Geometric_Asian_Greeks <- function(
            ((1/(volatility * time_to_maturity)) * I_0 * W_T -
               (1/volatility) * X_T * W_T + time_to_maturity * X_T) / I_1 +
            (1/time_to_maturity * I_0 * I_2 - I_2 * X_T) / (I_1^2)) %>%
-        E()
+        E_I_0_geom()
     } #theta
 
     if ("vega" %in% greek) {
@@ -229,7 +219,7 @@ Malliavin_Geometric_Asian_Greeks <- function(
             + ((W_T^2 - time_to_maturity)*I_0 - 4*volatility^2*I_2)*I_0/I_1^2
             + volatility * (3*W_T*I_2 - volatility*I_3)*I_0^2/I_1^3
             + 3*volatility^2*I_0^2*I_2^2/I_1^4)) %>%
-        E()
+        E_I_0_geom()
     } #gamma
 
   }
