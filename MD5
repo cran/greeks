@@ -1,4 +1,4 @@
-c26e706a7d7db6fcb86f6ee12684664d *DESCRIPTION
+c58f11caa90b16b7e83e76ce28e8d778 *DESCRIPTION
 c857b432b0cc1a1a798631a9e856eea5 *LICENSE
 7b480be5b8243464354657f8310c5a8f *NAMESPACE
 1dfe9e206fd55cdf570b7de390ccc7b3 *NEWS.md
@@ -8,17 +8,17 @@ ea89d9d9a5b0f1ea8a8d3d8f9750720a *R/BS_Geometric_Asian_Greeks.R
 de14a22e2096fd3297b6b5aa55323255 *R/BS_Malliavin_Asian_Greeks.R
 7eee2373bc90a6bc64cc318b8f5b7626 *R/Binomial_American_Greeks.R
 49af9de63bc193d8f9a461703832592b *R/Greeks.R
-ec2834b6830410b478a6a33f22c8912d *R/Greeks_UI.R
+334c5760c591d76eadaeb5b4aed4a1fb *R/Greeks_UI.R
 a0f58ce3c46a24d6484adeba7ac51f47 *R/Implied_Volatility.R
 05df58d2fa306f29fb6499c66cc30b66 *R/Malliavin_Asian_Greeks.R
 cf2ab4f1e6d246a1c32f0523fcd2f91f *R/Malliavin_European_Greeks.R
-8f7604bff9a243e50f23b684411d8da8 *R/Malliavin_Geometric_Asian_Greeks.R
+d8ea0a98f00a15f1b6d6de29f454c8dc *R/Malliavin_Geometric_Asian_Greeks.R
 656ea3144c34fca98c141eea4a98e2d0 *R/RcppExports.R
 b99f16b5e39c4eeca90b1f4962ccbb50 *R/greeks-package.R
 cf794928715019cf81bd51d467156178 *R/utils-pipe.R
 3447eb3b3ae62cdf7c60e8d8512ac778 *README.md
-b943a1546a1e17be4eea235ec7b4616b *build/partial.rdb
-e9314628037ce056c53a0ef5e9d500b2 *build/vignette.rds
+b54db8794555342c4feee5fe0b1b8f5b *build/partial.rdb
+2dc0e76621fd486635112ae2dcc3f490 *build/vignette.rds
 4f8bd692bd5c348aa2512639e959b362 *inst/doc/using_greeks.R
 5b9cea6bcf954d1f22505281a42d099d *inst/doc/using_greeks.Rmd
 33410335a9fe42561960fe2caf4e0b88 *inst/doc/using_greeks.html
@@ -51,7 +51,7 @@ a2da7330f534a64db751dd2ceb05dc60 *src/calc_I_3.cpp
 59356b1359c7323322169d57b70618b4 *src/rowCumsums.cpp
 915521a39acde844b3538dff9b17ecc8 *tests/testthat.R
 46635b74565a1947fad41b34b347faf6 *tests/testthat/test-BS_European_Greeks.R
-0e404bff719e6a0f5a6871537200a86a *tests/testthat/test-BS_Geometric_Asian_Greeks.R
+9a079d0a5dab8c890540f32c2c793483 *tests/testthat/test-BS_Geometric_Asian_Greeks.R
 09afdc6b7c8de61300057201e48c852e *tests/testthat/test-BS_Malliavin_Asian_Greeks.R
 dd5a1923df16aa5b958f3c31d63b84be *tests/testthat/test-Binomial_American_Greeks.R
 67e5b2ab4afad016e31ef628e3963dc7 *tests/testthat/test-Greeks.R
