@@ -1,4 +1,4 @@
-c58f11caa90b16b7e83e76ce28e8d778 *DESCRIPTION
+b10e7febeaeccd8171d74670bc462d43 *DESCRIPTION
 c857b432b0cc1a1a798631a9e856eea5 *LICENSE
 7b480be5b8243464354657f8310c5a8f *NAMESPACE
 1dfe9e206fd55cdf570b7de390ccc7b3 *NEWS.md
@@ -8,11 +8,11 @@ ea89d9d9a5b0f1ea8a8d3d8f9750720a *R/BS_Geometric_Asian_Greeks.R
 de14a22e2096fd3297b6b5aa55323255 *R/BS_Malliavin_Asian_Greeks.R
 7eee2373bc90a6bc64cc318b8f5b7626 *R/Binomial_American_Greeks.R
 49af9de63bc193d8f9a461703832592b *R/Greeks.R
-334c5760c591d76eadaeb5b4aed4a1fb *R/Greeks_UI.R
+c99397caad3163eb585f0727eb2567cd *R/Greeks_UI.R
 a0f58ce3c46a24d6484adeba7ac51f47 *R/Implied_Volatility.R
 05df58d2fa306f29fb6499c66cc30b66 *R/Malliavin_Asian_Greeks.R
 cf2ab4f1e6d246a1c32f0523fcd2f91f *R/Malliavin_European_Greeks.R
-d8ea0a98f00a15f1b6d6de29f454c8dc *R/Malliavin_Geometric_Asian_Greeks.R
+78d967f2fb630a37cd3786a108ca06f0 *R/Malliavin_Geometric_Asian_Greeks.R
 656ea3144c34fca98c141eea4a98e2d0 *R/RcppExports.R
 b99f16b5e39c4eeca90b1f4962ccbb50 *R/greeks-package.R
 cf794928715019cf81bd51d467156178 *R/utils-pipe.R
@@ -58,6 +58,6 @@ dd5a1923df16aa5b958f3c31d63b84be *tests/testthat/test-Binomial_American_Greeks.R
 8fd6ebc2a71242260daf00aca7c2791b *tests/testthat/test-Implied_Volatility.R
 9442c9def2537d5118fb156dec9e06dc *tests/testthat/test-Malliavin_Asian_Greeks.R
 dcf3b44e9bd9016abcabb5d31dd0594c *tests/testthat/test-Malliavin_European_Greeks.R
-72c2e6c1e8fa5a2e950342319cb2d674 *tests/testthat/test-Malliavin_Geometric_Asian_Greeks.R
+2c68f106c8ce1235a48d37e4d35a2518 *tests/testthat/test-Malliavin_Geometric_Asian_Greeks.R
 6f68ed4c3479ca35bfd2117e717647cd *vignettes/GreeksUI.png
 5b9cea6bcf954d1f22505281a42d099d *vignettes/using_greeks.Rmd
